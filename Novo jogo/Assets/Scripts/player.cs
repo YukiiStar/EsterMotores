@@ -8,14 +8,16 @@ public class player : MonoBehaviour
 
     public int velocidade = 10;
     public int forcaPulo = 7;
-    private Rigidbody rb;
-
     public bool noChao;
+    private Rigidbody rb;
+    private AudioSource source;
+    public AudioClip clipPulo, clipMoeda;
 
     // Start is called before the first frame update
     void Start()
     {
         TryGetComponent(out rb);
+        TryGetComponent(out source);
     }
 
     void OnCollisionEnter(Collision col) 
@@ -36,11 +38,12 @@ public class player : MonoBehaviour
         //Pular
         if(Input.GetKeyDown(KeyCode.Space) && noChao) //se apertou espaço
         {
-            //Aolica força pra cima
+            source.PlayOneShot(clipPulo);
+            //Aplica força pra cima
             rb.AddForce(Vector3.up * forcaPulo, ForceMode.Impulse);
             noChao = false;
         }
-
+            //se o jogar caiu
         if(transform.position.y <= -10){
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
